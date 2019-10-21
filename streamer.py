@@ -31,3 +31,31 @@ api = tweepy.API(auth)
 words_received = 0
 words_per_hour = 0
 seconds_spent = 1
+#Gets the twitter data
+def get_twitter_data():
+    global words_received
+    global words_per_hour
+    res = api.search("Donald Trump")
+    for i in res:
+        record = ''
+'''
+A number of data we choose not to run.
+record += str(i.user.id_str)
+record += ';'
+record += str(i.user.followers_count)
+record += ';'
+record += str(i.user.location)
+record += ';'
+record += str(i.favorite_count)
+record += ';'
+record += str(i.retweet_count)
+record += ';'
+'''
+record += str(i.user.name)
+record += '\n'
+record += str(normalize_timestamp(str(i.created_at)))
+record += '\n'
+record += str(i.text)
+words_received += len(i.text.split())
+record += '\n'
+producer.send(topic_name, str.encode(record))
